@@ -216,3 +216,23 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ============================================================
+# Kochi Urban Mobility Transit Optimizer
+# ============================================================
+
+# Environment files
+.env
+.env.local
+!.env.example
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Local data
+data/*
+!data/.gitkeep
+
+# Windows
+Thumbs.db
