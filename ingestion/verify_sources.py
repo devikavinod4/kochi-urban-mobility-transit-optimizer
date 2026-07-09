@@ -104,6 +104,78 @@ def verify_tomtom(api_key: str) -> bool:
     )
     return True
 
+def verify_openmeteo() -> bool:
+    """Verify the Open-Meteo API is reachable and returning weather data.
+
+    Makes a single request for current conditions at Kochi city centre and
+    confirms temperature and precipitation are present. No API key required.
+
+    Returns:
+        True if the API responded 200 and current weather was parsed,
+        False on any HTTP error, network failure, or unexpected response shape.
+    """
+    url = "https://api.open-meteo.com/v1/forecast"
+    params = {
+        "latitude": KOCHI_LAT,
+        "longitude": KOCHI_LON,
+        "current": "temperature_2m,precipitation,rain",
+    }
+
+    try:
+        response = requests.get(url, params=params, timeout=REQUEST_TIMEOUT_SECONDS)
+    except requests.exceptions.RequestException as exc:
+        logger.error("Open-Meteo request failed (network error): %s", exc)
+        return False
+
+    if response.status_code != 200:
+        logger.error("Open-Meteo returned HTTP %s (expected 200).", response.status_code)
+        return False
+
+    try:
+        current = response.json()["current"]
+        temperature = current["temperature_2m"]
+        precipitation = current["precipitation"]
+    except (KeyError, ValueError) as exc:
+        logger.error("Open-Meteo response missing expected fields: %s", exc)
+        return False
+
+    logger.info(
+        "Open-Meteo OK - Kochi: %s degC, precipitation %s mm.",
+        temperature,
+        precipitation,
+    )
+    return True
+
+# ... load_api_key()
+# ... verify_tomtom()
+# ... verify_openmeteo()
+
+
+def main() -> int:
+    logger.info("Starting source verification (Phase 0, D0.2)...")
+
+    api_key = load_api_key()
+
+    results = {
+        "TomTom": verify_tomtom(api_key),
+        "Open-Meteo": verify_openmeteo(),
+    }
+
+    for source, status in results.items():
+        logger.info("%-12s %s", source, "PASS" if status else "FAIL")
+
+    if all(results.values()):
+        logger.info("All %d sources verified successfully.", len(results))
+        return 0
+
+    logger.error(
+        "%d of %d sources failed verification.",
+        len(results) - sum(results.values()),
+        len(results),
+    )
+    return 1
+
+
 if __name__ == "__main__":
-    key = load_api_key()
-    verify_tomtom(key)
+    import sys
+    sys.exit(main())
