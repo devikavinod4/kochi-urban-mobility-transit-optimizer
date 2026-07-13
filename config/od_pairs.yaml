@@ -1,0 +1,157 @@
+# Origin-Destination pairs for TomTom traffic polling
+# Project: Kochi Urban Mobility & Transit Optimizer
+# Deliverable: D0.3 — Finalized OD-pair and corridor list
+# Locked: 2026-07-10
+#
+# Design decisions:
+#   - 9 pairs across 4 corridors; comfortably within TomTom free tier
+#     (9 pairs x 96 polls/day at 15-min intervals = 864 calls/day < 2,500 limit)
+#   - Travel mode: driving only (transit variants deferred to Phase 1 enhancement)
+#   - Coordinates verified from Wikipedia, OSM, and official sources
+#   - All coordinates in decimal degrees (WGS84)
+#
+# SOW core questions addressed:
+#   Q1 (congestion hotspots)  -> all pairs, especially corridors 1 + 3
+#   Q2 (rainfall impact)      -> all pairs, primary signal from corridor 1
+#   Q3 (transit utilization)  -> corridor 2 (metro spine comparison)
+#   Q4 (last-mile gaps)       -> corridors 1 + 4 (Kakkanad gap, Water Metro)
+#   Q5 (interventions)        -> corridor 4 (mode comparison baseline)
+
+polling:
+  interval_minutes: 30          # every 30 min during data collection
+  travel_mode: car              # TomTom calculateRoute travelMode parameter
+  daily_call_estimate: 864      # 9 pairs x 2 directions x 48 polls
+
+corridors:
+
+  - id: C1
+    name: "Kakkanad IT Corridor"
+    description: >
+      The primary study corridor. 60,000+ IT employees with no metro
+      connectivity. Primary source of the rain-impact headline finding.
+    pairs:
+      - id: 1
+        label: "Palarivattom Junction → Infopark Phase 1"
+        notes: "Core IT commute route; road-only (no metro alternative)"
+        origin:
+          name: "Palarivattom Junction"
+          lat: 9.9986
+          lon: 76.3113
+        destination:
+          name: "Infopark Phase 1 (Thapasya entrance)"
+          lat: 10.0101
+          lon: 76.3630
+
+      - id: 2
+        label: "Vyttila Mobility Hub → Infopark Phase 1"
+        notes: "Tests Water Metro feeder value; Vyttila is the key interchange"
+        origin:
+          name: "Vyttila Mobility Hub"
+          lat: 9.9674
+          lon: 76.3224
+        destination:
+          name: "Infopark Phase 1 (Thapasya entrance)"
+          lat: 10.0101
+          lon: 76.3630
+
+      - id: 3
+        label: "Kakkanad → SmartCity Kochi"
+        notes: "Within-corridor movement; SmartCity adjacent to Infopark"
+        origin:
+          name: "Kakkanad Water Metro Terminal"
+          lat: 9.9934
+          lon: 76.3513
+        destination:
+          name: "SmartCity Kochi"
+          lat: 10.0167
+          lon: 76.3700
+
+  - id: C2
+    name: "Kochi Metro Spine (Aluva–Tripunithura)"
+    description: >
+      Full Line 1 spine. Allows road vs metro travel-time comparison
+      and segment-level utilization analysis.
+    pairs:
+      - id: 4
+        label: "Aluva Metro Station → MG Road (Ernakulam)"
+        notes: "Full spine by road; compare against 45-min metro schedule"
+        origin:
+          name: "Aluva Metro Station"
+          lat: 10.1088
+          lon: 76.3520
+        destination:
+          name: "MG Road Metro Station"
+          lat: 9.9834
+          lon: 76.2858
+
+      - id: 5
+        label: "Edappally Junction → Vyttila Mobility Hub"
+        notes: "Mid-spine; Edappally is the busiest metro interchange"
+        origin:
+          name: "Edappally Junction"
+          lat: 10.0220
+          lon: 76.3068
+        destination:
+          name: "Vyttila Mobility Hub"
+          lat: 9.9674
+          lon: 76.3224
+
+      - id: 6
+        label: "Kaloor Junction → Tripunithura"
+        notes: "Southern segment; Tripunithura is the eastern terminus"
+        origin:
+          name: "Kaloor Junction"
+          lat: 9.9980
+          lon: 76.2978
+        destination:
+          name: "Tripunithura Metro Station"
+          lat: 9.9436
+          lon: 76.3430
+
+  - id: C3
+    name: "Key Junctions (Congestion Hotspot Monitoring)"
+    description: >
+      Chronic congestion zones named in the SOW. Direct probes of the
+      worst road stretches for Q1 hotspot mapping.
+    pairs:
+      - id: 7
+        label: "Edappally Junction → Palarivattom Junction"
+        notes: "Consistently worst road stretch in Kochi; prime rain-impact corridor"
+        origin:
+          name: "Edappally Junction"
+          lat: 10.0220
+          lon: 76.3068
+        destination:
+          name: "Palarivattom Junction"
+          lat: 9.9986
+          lon: 76.3113
+
+      - id: 8
+        label: "Palarivattom Junction → Vyttila Mobility Hub"
+        notes: "Direct probe of the Palarivattom–Vyttila bottleneck"
+        origin:
+          name: "Palarivattom Junction"
+          lat: 9.9986
+          lon: 76.3113
+        destination:
+          name: "Vyttila Mobility Hub"
+          lat: 9.9674
+          lon: 76.3224
+
+  - id: C4
+    name: "Water Metro Parallel Routes (Mode Comparison)"
+    description: >
+      Road travel times on routes served by Water Metro. Comparing road
+      vs water travel time supports Q3 (utilization) and Q5 (interventions).
+    pairs:
+      - id: 9
+        label: "Vyttila Mobility Hub → Kakkanad Water Metro Terminal"
+        notes: "Road parallel of the Vyttila–Kakkanad water metro route"
+        origin:
+          name: "Vyttila Mobility Hub"
+          lat: 9.9674
+          lon: 76.3224
+        destination:
+          name: "Kakkanad Water Metro Terminal"
+          lat: 9.9934
+          lon: 76.3513
