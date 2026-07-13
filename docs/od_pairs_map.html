@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_9d7d02d188cde56f3b9ede417c5636af {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div style="
+    position: fixed;
+    bottom: 40px; left: 40px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: sans-serif;
+    font-size: 13px;
+    z-index: 9999;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+">
+<b style="font-size:14px">Kochi Moves — OD Pairs (D0.3)</b><br><br>
+<span style="color:#E63946">&#9644;</span>&nbsp;<b>C1</b> Kakkanad IT Corridor (pairs 1–3)<br>
+<span style="color:#2196F3">&#9644;</span>&nbsp;<b>C2</b> Metro Spine Aluva–Tripunithura (pairs 4–6)<br>
+<span style="color:#FF9800">&#9644;</span>&nbsp;<b>C3</b> Key Junctions / Hotspots (pairs 7–8)<br>
+<span style="color:#4CAF50">&#9644;</span>&nbsp;<b>C4</b> Water Metro Parallel (pair 9)<br>
+<br><small>Click any point for coordinates &amp; corridor info.</small>
+</div>
+    
+<div style="
+    position: fixed;
+    top: 12px; left: 50%; transform: translateX(-50%);
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    z-index: 9999;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+">
+Kochi Urban Mobility — Origin-Destination Pairs (Phase 0, D0.3)
+</div>
+    
+            <div class="folium-map" id="map_9d7d02d188cde56f3b9ede417c5636af" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_9d7d02d188cde56f3b9ede417c5636af = L.map(
+                "map_9d7d02d188cde56f3b9ede417c5636af",
+                {
+                    center: [9.985, 76.31],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_bc56430c161440a2233fd53e7443ded6 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_bc56430c161440a2233fd53e7443ded6.addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            var poly_line_1a521e8692f36061902ec01d1a167eb4 = L.polyline(
+                [[9.9986, 76.3113], [10.0101, 76.363]],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#E63946", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_1a521e8692f36061902ec01d1a167eb4.bindTooltip(
+                `<div>
+                     [C1] Pair 1: Palarivattom Junction → Infopark Phase 1
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_13585fc297f69356a1eb8b165aeb157e = L.circleMarker(
+                [9.9986, 76.3113],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E63946", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_8e710a3446bfee0ec70a8a018c56d976 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_6cfc4eb4175d0db25b21bcc7994ed520 = $(`<div id="html_6cfc4eb4175d0db25b21bcc7994ed520" style="width: 100.0%; height: 100.0%;"><b>Palarivattom Junction</b><br>Corridors: Kakkanad IT Corridor<br>(9.9986, 76.3113)</div>`)[0];
+                popup_8e710a3446bfee0ec70a8a018c56d976.setContent(html_6cfc4eb4175d0db25b21bcc7994ed520);
+            
+        
+
+        circle_marker_13585fc297f69356a1eb8b165aeb157e.bindPopup(popup_8e710a3446bfee0ec70a8a018c56d976)
+        ;
+
+        
+    
+    
+            circle_marker_13585fc297f69356a1eb8b165aeb157e.bindTooltip(
+                `<div>
+                     Palarivattom Junction
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_07b5bc29f76aac8eebc7138da82f1ff6 = L.circleMarker(
+                [10.0101, 76.363],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E63946", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_978e5f8f7d3b842b0e697161eb4e28a7 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_0dbe6aae2da2c7c7c2a875d60e5946c8 = $(`<div id="html_0dbe6aae2da2c7c7c2a875d60e5946c8" style="width: 100.0%; height: 100.0%;"><b>Infopark Phase 1 (Thapasya entrance)</b><br>Corridors: Kakkanad IT Corridor<br>(10.0101, 76.3630)</div>`)[0];
+                popup_978e5f8f7d3b842b0e697161eb4e28a7.setContent(html_0dbe6aae2da2c7c7c2a875d60e5946c8);
+            
+        
+
+        circle_marker_07b5bc29f76aac8eebc7138da82f1ff6.bindPopup(popup_978e5f8f7d3b842b0e697161eb4e28a7)
+        ;
+
+        
+    
+    
+            circle_marker_07b5bc29f76aac8eebc7138da82f1ff6.bindTooltip(
+                `<div>
+                     Infopark Phase 1 (Thapasya entrance)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_8ea4dce7d3505d2e9faeb37c02a50b49 = L.polyline(
+                [[9.9674, 76.3224], [10.0101, 76.363]],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#E63946", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_8ea4dce7d3505d2e9faeb37c02a50b49.bindTooltip(
+                `<div>
+                     [C1] Pair 2: Vyttila Mobility Hub → Infopark Phase 1
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_511d92cedbf53c3d35595aa25909cf2b = L.circleMarker(
+                [9.9674, 76.3224],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E63946", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_83c1f5199dc6cd8acd6c3e71220138ab = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_a80f247bbab566d7c8396ee88b537a1e = $(`<div id="html_a80f247bbab566d7c8396ee88b537a1e" style="width: 100.0%; height: 100.0%;"><b>Vyttila Mobility Hub</b><br>Corridors: Kakkanad IT Corridor<br>(9.9674, 76.3224)</div>`)[0];
+                popup_83c1f5199dc6cd8acd6c3e71220138ab.setContent(html_a80f247bbab566d7c8396ee88b537a1e);
+            
+        
+
+        circle_marker_511d92cedbf53c3d35595aa25909cf2b.bindPopup(popup_83c1f5199dc6cd8acd6c3e71220138ab)
+        ;
+
+        
+    
+    
+            circle_marker_511d92cedbf53c3d35595aa25909cf2b.bindTooltip(
+                `<div>
+                     Vyttila Mobility Hub
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_9ff8fec8bb2c40b8545a6d9c9c22367a = L.polyline(
+                [[9.9934, 76.3513], [10.0167, 76.37]],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#E63946", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_9ff8fec8bb2c40b8545a6d9c9c22367a.bindTooltip(
+                `<div>
+                     [C1] Pair 3: Kakkanad → SmartCity Kochi
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8de0b12d9425746e8567b6cdf74f58d3 = L.circleMarker(
+                [9.9934, 76.3513],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E63946", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_20c6e4f5d143d3dc3f30f02db4c87fa1 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_563d66fbc7541ab31d8e3b7ba9c9f625 = $(`<div id="html_563d66fbc7541ab31d8e3b7ba9c9f625" style="width: 100.0%; height: 100.0%;"><b>Kakkanad Water Metro Terminal</b><br>Corridors: Kakkanad IT Corridor<br>(9.9934, 76.3513)</div>`)[0];
+                popup_20c6e4f5d143d3dc3f30f02db4c87fa1.setContent(html_563d66fbc7541ab31d8e3b7ba9c9f625);
+            
+        
+
+        circle_marker_8de0b12d9425746e8567b6cdf74f58d3.bindPopup(popup_20c6e4f5d143d3dc3f30f02db4c87fa1)
+        ;
+
+        
+    
+    
+            circle_marker_8de0b12d9425746e8567b6cdf74f58d3.bindTooltip(
+                `<div>
+                     Kakkanad Water Metro Terminal
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8eb68453a404c67f42fcf20625c4eb65 = L.circleMarker(
+                [10.0167, 76.37],
+                {"bubblingMouseEvents": true, "color": "#E63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#E63946", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_9adc42d119471f40268e37fd334c934c = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_cc0083659884a0dd79e9efbcccc4fb98 = $(`<div id="html_cc0083659884a0dd79e9efbcccc4fb98" style="width: 100.0%; height: 100.0%;"><b>SmartCity Kochi</b><br>Corridors: Kakkanad IT Corridor<br>(10.0167, 76.3700)</div>`)[0];
+                popup_9adc42d119471f40268e37fd334c934c.setContent(html_cc0083659884a0dd79e9efbcccc4fb98);
+            
+        
+
+        circle_marker_8eb68453a404c67f42fcf20625c4eb65.bindPopup(popup_9adc42d119471f40268e37fd334c934c)
+        ;
+
+        
+    
+    
+            circle_marker_8eb68453a404c67f42fcf20625c4eb65.bindTooltip(
+                `<div>
+                     SmartCity Kochi
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_73e13b713092431d7ea14275659ceb0c = L.polyline(
+                [[10.1088, 76.352], [9.9834, 76.2858]],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2196F3", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_73e13b713092431d7ea14275659ceb0c.bindTooltip(
+                `<div>
+                     [C2] Pair 4: Aluva Metro Station → MG Road (Ernakulam)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c4400910810870c3420742bdc80a5e52 = L.circleMarker(
+                [10.1088, 76.352],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2196F3", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_b67952b1704c39f9a70cc806b2096df9 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_8b198e924d0400c850f9484faa8c5330 = $(`<div id="html_8b198e924d0400c850f9484faa8c5330" style="width: 100.0%; height: 100.0%;"><b>Aluva Metro Station</b><br>Corridors: Kochi Metro Spine (Aluva–Tripunithura)<br>(10.1088, 76.3520)</div>`)[0];
+                popup_b67952b1704c39f9a70cc806b2096df9.setContent(html_8b198e924d0400c850f9484faa8c5330);
+            
+        
+
+        circle_marker_c4400910810870c3420742bdc80a5e52.bindPopup(popup_b67952b1704c39f9a70cc806b2096df9)
+        ;
+
+        
+    
+    
+            circle_marker_c4400910810870c3420742bdc80a5e52.bindTooltip(
+                `<div>
+                     Aluva Metro Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0c44888e2779fb51f76a59f5f1535c8d = L.circleMarker(
+                [9.9834, 76.2858],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2196F3", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_28409340225d4c84bf30176dff0a0b64 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_e0f077d8a623ce2ad08d43df91729164 = $(`<div id="html_e0f077d8a623ce2ad08d43df91729164" style="width: 100.0%; height: 100.0%;"><b>MG Road Metro Station</b><br>Corridors: Kochi Metro Spine (Aluva–Tripunithura)<br>(9.9834, 76.2858)</div>`)[0];
+                popup_28409340225d4c84bf30176dff0a0b64.setContent(html_e0f077d8a623ce2ad08d43df91729164);
+            
+        
+
+        circle_marker_0c44888e2779fb51f76a59f5f1535c8d.bindPopup(popup_28409340225d4c84bf30176dff0a0b64)
+        ;
+
+        
+    
+    
+            circle_marker_0c44888e2779fb51f76a59f5f1535c8d.bindTooltip(
+                `<div>
+                     MG Road Metro Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_66771d6234096310d91eed85d0c72013 = L.polyline(
+                [[10.022, 76.3068], [9.9674, 76.3224]],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2196F3", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_66771d6234096310d91eed85d0c72013.bindTooltip(
+                `<div>
+                     [C2] Pair 5: Edappally Junction → Vyttila Mobility Hub
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b1eea34da9ebadcf49500260b8fb4f36 = L.circleMarker(
+                [10.022, 76.3068],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2196F3", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_5f777f70602e6f09f382b63d4d040d46 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_c10acc806b0432ed717599e1481c8539 = $(`<div id="html_c10acc806b0432ed717599e1481c8539" style="width: 100.0%; height: 100.0%;"><b>Edappally Junction</b><br>Corridors: Kochi Metro Spine (Aluva–Tripunithura)<br>(10.0220, 76.3068)</div>`)[0];
+                popup_5f777f70602e6f09f382b63d4d040d46.setContent(html_c10acc806b0432ed717599e1481c8539);
+            
+        
+
+        circle_marker_b1eea34da9ebadcf49500260b8fb4f36.bindPopup(popup_5f777f70602e6f09f382b63d4d040d46)
+        ;
+
+        
+    
+    
+            circle_marker_b1eea34da9ebadcf49500260b8fb4f36.bindTooltip(
+                `<div>
+                     Edappally Junction
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_e1b2a9776b1d4fe5a05d58cb80c78b10 = L.polyline(
+                [[9.998, 76.2978], [9.9436, 76.343]],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2196F3", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_e1b2a9776b1d4fe5a05d58cb80c78b10.bindTooltip(
+                `<div>
+                     [C2] Pair 6: Kaloor Junction → Tripunithura
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b4eb2d2d532fe9358f15d8a304d242c0 = L.circleMarker(
+                [9.998, 76.2978],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2196F3", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_026a72175bca6b556dab083323a0b623 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_4cab2f64ceecd4e1e767141785bd6c35 = $(`<div id="html_4cab2f64ceecd4e1e767141785bd6c35" style="width: 100.0%; height: 100.0%;"><b>Kaloor Junction</b><br>Corridors: Kochi Metro Spine (Aluva–Tripunithura)<br>(9.9980, 76.2978)</div>`)[0];
+                popup_026a72175bca6b556dab083323a0b623.setContent(html_4cab2f64ceecd4e1e767141785bd6c35);
+            
+        
+
+        circle_marker_b4eb2d2d532fe9358f15d8a304d242c0.bindPopup(popup_026a72175bca6b556dab083323a0b623)
+        ;
+
+        
+    
+    
+            circle_marker_b4eb2d2d532fe9358f15d8a304d242c0.bindTooltip(
+                `<div>
+                     Kaloor Junction
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c24caff624970f74b6c0aae4fb6a6bc2 = L.circleMarker(
+                [9.9436, 76.343],
+                {"bubblingMouseEvents": true, "color": "#2196F3", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2196F3", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+        var popup_22d0395f4bb96d1eda50bc78a78da233 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_40aac7354fa8fcc92a23c013f2d6c271 = $(`<div id="html_40aac7354fa8fcc92a23c013f2d6c271" style="width: 100.0%; height: 100.0%;"><b>Tripunithura Metro Station</b><br>Corridors: Kochi Metro Spine (Aluva–Tripunithura)<br>(9.9436, 76.3430)</div>`)[0];
+                popup_22d0395f4bb96d1eda50bc78a78da233.setContent(html_40aac7354fa8fcc92a23c013f2d6c271);
+            
+        
+
+        circle_marker_c24caff624970f74b6c0aae4fb6a6bc2.bindPopup(popup_22d0395f4bb96d1eda50bc78a78da233)
+        ;
+
+        
+    
+    
+            circle_marker_c24caff624970f74b6c0aae4fb6a6bc2.bindTooltip(
+                `<div>
+                     Tripunithura Metro Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_49bdd83a742ed6dc94256ef92416dea0 = L.polyline(
+                [[10.022, 76.3068], [9.9986, 76.3113]],
+                {"bubblingMouseEvents": true, "color": "#FF9800", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF9800", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_49bdd83a742ed6dc94256ef92416dea0.bindTooltip(
+                `<div>
+                     [C3] Pair 7: Edappally Junction → Palarivattom Junction
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_08285a1750f0bb51b0a4111fdd102091 = L.polyline(
+                [[9.9986, 76.3113], [9.9674, 76.3224]],
+                {"bubblingMouseEvents": true, "color": "#FF9800", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF9800", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_08285a1750f0bb51b0a4111fdd102091.bindTooltip(
+                `<div>
+                     [C3] Pair 8: Palarivattom Junction → Vyttila Mobility Hub
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_676396c2cb8ab33a3345eca28619475a = L.polyline(
+                [[9.9674, 76.3224], [9.9934, 76.3513]],
+                {"bubblingMouseEvents": true, "color": "#4CAF50", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4CAF50", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_9d7d02d188cde56f3b9ede417c5636af);
+        
+    
+            poly_line_676396c2cb8ab33a3345eca28619475a.bindTooltip(
+                `<div>
+                     [C4] Pair 9: Vyttila Mobility Hub → Kakkanad Water Metro Terminal
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>
