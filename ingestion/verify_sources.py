@@ -18,6 +18,8 @@ import sys
 
 import requests
 from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
+
 
 # Configure logging once, at module load. All functions use this logger
 # rather than print(), so output has timestamps, levels, and is redirectable.
@@ -146,6 +148,53 @@ def verify_openmeteo() -> bool:
     )
     return True
 
+
+def verify_database() -> bool:
+    """Verify the Neon PostgreSQL database is reachable.
+
+    Creates a connection to the Neon database, checks the PostgreSQL
+    version, and confirms the PostGIS extension is installed.
+
+    Returns:
+        True if the database connection succeeded and PostGIS is available,
+        False otherwise.
+    """
+
+    database_url = os.getenv("DATABASE_URL")
+
+    if not database_url:
+        logger.error("DATABASE_URL not found. Check your .env file.")
+        return False
+
+    try:
+        # Create a database engine
+        engine = create_engine(database_url)
+
+        # Open a connection
+        with engine.connect() as connection:
+
+            # Verify PostgreSQL is reachable
+            postgres_version = connection.execute(
+                text("SELECT version();")
+            ).scalar()
+
+            logger.info("Connected to PostgreSQL.")
+            logger.info("Database Version: %s", postgres_version)
+
+            # Verify PostGIS is installed
+            postgis_version = connection.execute(
+                text("SELECT PostGIS_Version();")
+            ).scalar()
+
+            logger.info("PostGIS Version: %s", postgis_version)
+
+    except Exception as exc:
+        logger.error("Database verification failed: %s", exc)
+        return False
+
+    logger.info("Neon Database verification successful.")
+    return True
+
 # ... load_api_key()
 # ... verify_tomtom()
 # ... verify_openmeteo()
@@ -159,6 +208,7 @@ def main() -> int:
     results = {
         "TomTom": verify_tomtom(api_key),
         "Open-Meteo": verify_openmeteo(),
+        "Neon Database": verify_database(),
     }
 
     for source, status in results.items():
