@@ -92,6 +92,7 @@ def verify_tomtom(api_key: str) -> bool:
         return False
 
     try:
+        #logger.info(f'Full tom tom response: {response.json()}')
         summary = response.json()["routes"][0]["summary"]
         travel_seconds = summary["travelTimeInSeconds"]
     except (KeyError, IndexError, ValueError) as exc:
@@ -227,5 +228,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    print("We are in main... Just starting!!!!!")
     import sys
     sys.exit(main())

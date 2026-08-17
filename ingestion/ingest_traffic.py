@@ -19,10 +19,17 @@ import requests
 import yaml
 from dotenv import load_dotenv
 
+LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)-7s | %(message)s",
-    datefmt="%H:%M:%S",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    handlers=[
+        logging.FileHandler(LOG_DIR / "traffic_ingest.log", encoding="utf-8"),
+        logging.StreamHandler(),  # keeps console output too, for manual runs
+    ],
 )
 logger = logging.getLogger(__name__)
 
