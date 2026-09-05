@@ -77,15 +77,13 @@ def insert_hourly_rows(conn, hourly: dict) -> int:
             observation_time_ist = datetime.fromisoformat(t).replace(tzinfo=IST)
             cur.execute(
                 """
-                observation_time_ist = datetime.fromisoformat(t).replace(tzinfo=IST)
-            
                 INSERT INTO raw.weather_hourly
                     (observation_time, temperature_celsius, precipitation_mm, raw_response)
                 VALUES (%s, %s, %s, %s)
                 ON CONFLICT (observation_time) DO NOTHING
                 RETURNING weather_id;
                 """,
-                (t, temp, rain, json.dumps(record)),
+                (observation_time_ist, temp, rain, json.dumps(record)),
             )
             if cur.fetchone() is not None:
                 inserted += 1

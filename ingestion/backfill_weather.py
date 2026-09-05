@@ -86,12 +86,11 @@ def insert_hourly_rows(conn, hourly: dict) -> int:
                 ON CONFLICT (observation_time) DO NOTHING
                 RETURNING weather_id;
                 """,
-                (t, temp, rain, json.dumps(record)),
+                (observation_time_ist, temp, rain, json.dumps(record)),
             )
             if cur.fetchone() is not None:
                 inserted += 1
     return inserted
-
 
 def main() -> None:
     logger.info("Starting historical weather backfill: %s to %s", BACKFILL_START, BACKFILL_END)
