@@ -12,6 +12,8 @@ import logging
 import os
 from datetime import date, timedelta
 from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import psycopg2
 import requests
@@ -34,6 +36,7 @@ logger = logging.getLogger(__name__)
 KOCHI_LAT = 9.9312
 KOCHI_LON = 76.2673
 ARCHIVE_URL = "https://archive-api.open-meteo.com/v1/archive"
+IST = ZoneInfo("Asia/Kolkata")
 
 # Match the start of your traffic data collection
 BACKFILL_START = date(2026, 8, 17)
@@ -74,6 +77,7 @@ def insert_hourly_rows(conn, hourly: dict) -> int:
     with conn.cursor() as cur:
         for t, temp, rain in zip(times, temps, precip):
             record = {"time": t, "temperature_2m": temp, "precipitation": rain}
+            observation_time_ist = datetime.fromisoformat(t).replace(tzinfo=IST)
             cur.execute(
                 """
                 INSERT INTO raw.weather_hourly

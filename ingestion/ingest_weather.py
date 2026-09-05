@@ -11,6 +11,8 @@ import json
 import logging
 import os
 from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo                  
 
 import psycopg2
 import requests
@@ -33,6 +35,7 @@ logger = logging.getLogger(__name__)
 KOCHI_LAT = 9.9312
 KOCHI_LON = 76.2673
 FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
+IST = ZoneInfo("Asia/Kolkata")
 
 
 def load_db_url() -> str:
@@ -71,8 +74,11 @@ def insert_hourly_rows(conn, hourly: dict) -> int:
     with conn.cursor() as cur:
         for t, temp, rain in zip(times, temps, precip):
             record = {"time": t, "temperature_2m": temp, "precipitation": rain}
+            observation_time_ist = datetime.fromisoformat(t).replace(tzinfo=IST)
             cur.execute(
                 """
+                observation_time_ist = datetime.fromisoformat(t).replace(tzinfo=IST)
+            
                 INSERT INTO raw.weather_hourly
                     (observation_time, temperature_celsius, precipitation_mm, raw_response)
                 VALUES (%s, %s, %s, %s)
