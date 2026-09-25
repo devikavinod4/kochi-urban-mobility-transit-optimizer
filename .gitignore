@@ -221,9 +221,10 @@ __marimo__/
 # Kochi Urban Mobility Transit Optimizer
 # ============================================================
 
-# Environment files
+# Environment files (any .env variant, e.g. ".env copy.example", except the template)
 .env
 .env.local
+.env*
 !.env.example
 
 # Logs
@@ -236,3 +237,6 @@ data/*
 
 # Windows
 Thumbs.db
+
+# macOS
+.DS_Store
